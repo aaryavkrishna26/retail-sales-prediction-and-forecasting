@@ -1,0 +1,110 @@
+# ==============================================================================
+# Byte-compiled / optimized / DLL files
+# ==============================================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# ==============================================================================
+# Virtual Environments & Packaging
+# ==============================================================================
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ==============================================================================
+# Jupyter Notebooks & Caches
+# ==============================================================================
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+
+# ==============================================================================
+# Datasets (Raw & Processed) - Strictly Ignored
+# ==============================================================================
+# Keep directory placeholders but exclude all data files
+data/raw/*
+!data/raw/.gitkeep
+!data/raw/README.md
+
+data/processed/*
+!data/processed/.gitkeep
+
+# General data file patterns
+*.csv
+*.tsv
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.pkl
+*.pickle
+*.joblib
+*.zip
+*.tar.gz
+*.7z
+
+# ==============================================================================
+# Serialized Models and Checkpoints
+# ==============================================================================
+models/*
+!models/.gitkeep
+*.pt
+*.pth
+*.onnx
+
+# ==============================================================================
+# Secrets, Credentials, & Environment Variables - Strictly Ignored
+# ==============================================================================
+.env
+.env.*
+!.env.example
+kaggle.json
+credentials.json
+client_secret*.json
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.token
+
+# ==============================================================================
+# Operating System & IDE Artifacts
+# ==============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
