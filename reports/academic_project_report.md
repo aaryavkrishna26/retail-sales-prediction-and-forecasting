@@ -58,16 +58,22 @@ graph TD
 
 ---
 
-## 5. Experimental Results (To Be Populated During Model Execution)
-*Placeholder table for experimental tracking:*
+## 5. Experimental Results (Benchmark Summary)
 
-| Model Category | Model Variant | Target Task | Train Metric | Test RMSLE / RMSE | Classification F1 / AUC |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| **Baseline** | Naive Lag / Rolling Mean | Sales Forecasting | Pending | Pending | N/A |
-| **Linear Models** | OLS / Ridge / Lasso | Sales Forecasting | Pending | Pending | N/A |
-| **Classification** | Logistic Regression | Surge Detection | Pending | N/A | Pending |
-| **Time Series** | SARIMAX / ARIMA | Temporal Forecast | Pending | Pending | N/A |
-| **Ensemble** | LightGBM / XGBoost | Sales Forecasting | Pending | Pending | N/A |
+Evaluated on the 15-day chronological holdout (`2017-08-01` to `2017-08-15`, $N=26,730$ store-family validation observations):
+
+| Model Category | Model Variant | Target Task | RMSLE | RMSE | MAE | $R^2$ / F1 | Operational Role |
+| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
+| **Baseline** | DummyRegressor (Mean) | Continuous Sales | 2.5245 | 1,317.35 | 458.25 | -0.1209 | Empirical Mean Baseline |
+| **Baseline** | Seasonal Naive (Lag 16-22) | Continuous Sales | 0.6388 | 356.20 | 92.17 | 0.9180 | Horizon-Consistent Persistence |
+| **Linear Models** | Ridge Regression ($\alpha=100.0$) | Continuous Sales | 0.6481 | 470.02 | 128.31 | 0.8573 | Selected Best Linear Pipeline |
+| **Linear Models** | Lasso Regression ($\alpha=0.001$) | Continuous Sales | 0.6539 | 456.40 | 121.99 | 0.8655 | Sparse Linear Regularization |
+| **Classification** | DummyClassifier (Majority) | Surge Detection | N/A | N/A | N/A | F1: 0.0000 | 83.30% Acc, 0% Recall (100% Stockout) |
+| **Classification** | Logistic Regression (Balanced) | Surge Detection | N/A | N/A | N/A | F1: 0.4003 | **76.94% Recall** (Stockout Prevention) |
+| **Classification** | Logistic Regression (Tuned $\tau=0.29$) | Surge Detection | N/A | N/A | N/A | **F1: 0.4241** | ROC-AUC: 0.7518, PR-AUC: 0.4180 |
+| **Time Series (Macro)** | Holt-Winters (Additive) | Aggregated Demand | 0.1295 | 115,406.36 | 82,557.60 | -0.0683 | Enterprise Daily Demand Forecaster |
+| **Time Series (Macro)** | SARIMAX (With Exogenous) | Aggregated Demand | 0.1437 | 121,980.13 | 90,145.81 | -0.1935 | State-Space + Promo/Payday Signals |
+| **Time Series (Micro)** | Holt-Winters (Cohort Mean) | Store-Family Demand | 0.2151 | 1,198.85 | 926.13 | -0.3014 | Top Performing Micro Trend Forecaster |
 
 ---
 

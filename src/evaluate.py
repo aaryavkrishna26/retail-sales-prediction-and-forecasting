@@ -11,6 +11,7 @@ from sklearn.metrics import (
     recall_score,
     f1_score,
     roc_auc_score,
+    average_precision_score,
     mean_squared_error,
     mean_absolute_error,
     r2_score,
@@ -65,8 +66,10 @@ def evaluate_classification(
 
     if y_pred_proba is not None and len(np.unique(y_true)) > 1:
         metrics["ROC_AUC"] = round(float(roc_auc_score(y_true, y_pred_proba)), 4)
+        metrics["PR_AUC"] = round(float(average_precision_score(y_true, y_pred_proba)), 4)
     else:
         metrics["ROC_AUC"] = float("nan")
+        metrics["PR_AUC"] = float("nan")
 
     return metrics
 
