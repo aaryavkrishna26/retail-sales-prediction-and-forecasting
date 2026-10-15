@@ -18,6 +18,7 @@ import seaborn as sns
 
 from sklearn.dummy import DummyClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
@@ -115,6 +116,12 @@ def build_logistic_regression_pipeline(
             random_state=random_state,
             max_iter=1000,
             solver="lbfgs",
+        )
+    elif model_type in ["decision_tree", "dt"]:
+        classifier = DecisionTreeClassifier(
+            max_depth=10,
+            class_weight=class_weight or "balanced",
+            random_state=random_state,
         )
     else:
         classifier = LogisticRegression(

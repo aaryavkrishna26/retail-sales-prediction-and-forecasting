@@ -13,6 +13,7 @@ import pandas as pd
 from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.dummy import DummyRegressor
 from sklearn.linear_model import LinearRegression, Ridge, Lasso, ElasticNet
+from sklearn.tree import DecisionTreeRegressor
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
@@ -150,9 +151,11 @@ def build_linear_regression_pipeline(
             max_iter=2000,
             tol=1e-3,
         )
+    elif model_key in ["decision_tree", "dt"]:
+        regressor = DecisionTreeRegressor(max_depth=12, min_samples_leaf=50, random_state=RANDOM_SEED)
     else:
         raise ValueError(
-            f"Unsupported model_type '{model_type}'. Choose from 'dummy', 'snaive', 'ols', 'ridge', 'lasso', 'elasticnet'."
+            f"Unsupported model_type '{model_type}'. Choose from 'dummy', 'snaive', 'ols', 'ridge', 'lasso', 'elasticnet', 'decision_tree'."
         )
 
     pipeline = Pipeline(

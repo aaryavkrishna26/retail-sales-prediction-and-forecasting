@@ -326,15 +326,12 @@ retail-sales-prediction-and-forecasting/
 │   ├── best_logistic_model.joblib    # Serialized Logistic pipeline & thresholds (~40 KB)
 │   ├── best_time_series_model.joblib # Serialized SARIMAX forecaster (~18 MB)
 │   └── .gitkeep
-├── notebooks/                # Modular Jupyter exploration notebooks
-│   ├── 01_exploratory_data_analysis.ipynb
-│   ├── 02_preprocessing_and_feature_engineering.ipynb
-│   ├── 03_linear_regression_modeling.ipynb
-│   ├── 04_logistic_regression_modeling.ipynb
-│   ├── 04_logistic_regression_classification.ipynb
-│   ├── 05_time_series_forecasting.ipynb
-│   ├── 05_time_series_modeling.ipynb
-│   └── 06_model_evaluation_and_comparison.ipynb
+├── notebooks/                # Modular, sequentially ordered Jupyter notebooks
+│   ├── 01_data_exploration_and_preprocessing.ipynb # Comprehensive EDA, data cleaning, feature engineering & parquet serialization
+│   ├── 02_linear_regression.ipynb                  # Multi-algorithm continuous sales regression (OLS, Ridge, Lasso, ElasticNet, DecisionTree)
+│   ├── 03_logistic_regression.ipynb                # Demand surge classification & threshold tuning (Logistic, Balanced, DecisionTree)
+│   ├── 04_time_series_forecasting.ipynb            # Multi-algorithm time-series forecasting (Naive, MA, Holt-Winters, SARIMA, SARIMAX)
+│   └── 05_final_model_comparison.ipynb             # Consolidated cross-task evaluation, executive synthesis & deployment guide
 ├── reports/                  # Project reports and documentation
 │   ├── figures/              # Generated visualizations
 │   │   ├── daily_sales_trend.png

@@ -128,15 +128,12 @@ retail-sales-prediction-and-forecasting/
 │   ├── best_logistic_model.joblib    # Serialized Logistic model & surge thresholds (~40 KB)
 │   ├── best_time_series_model.joblib # Serialized SARIMAX forecaster (~18 MB)
 │   └── .gitkeep
-├── notebooks/                # Modular Jupyter research & exploration notebooks
-│   ├── 01_exploratory_data_analysis.ipynb
-│   ├── 02_preprocessing_and_feature_engineering.ipynb
-│   ├── 03_linear_regression_modeling.ipynb
-│   ├── 04_logistic_regression_modeling.ipynb
-│   ├── 04_logistic_regression_classification.ipynb # Synchronized mirror
-│   ├── 05_time_series_forecasting.ipynb
-│   ├── 05_time_series_modeling.ipynb              # Synchronized mirror
-│   └── 06_model_evaluation_and_comparison.ipynb
+├── notebooks/                # Modular, sequentially ordered Jupyter notebooks
+│   ├── 01_data_exploration_and_preprocessing.ipynb # Comprehensive EDA, data cleaning, feature engineering & parquet serialization
+│   ├── 02_linear_regression.ipynb                  # Multi-algorithm continuous sales regression (OLS, Ridge, Lasso, ElasticNet, DecisionTree)
+│   ├── 03_logistic_regression.ipynb                # Demand surge classification & threshold tuning (Logistic, Balanced, DecisionTree)
+│   ├── 04_time_series_forecasting.ipynb            # Multi-algorithm time-series forecasting (Naive, MA, Holt-Winters, SARIMA, SARIMAX)
+│   └── 05_final_model_comparison.ipynb             # Consolidated cross-task evaluation, executive synthesis & deployment guide
 ├── reports/                  # Technical benchmark reports & quantitative tables
 │   ├── figures/              # Diagnostic visualization plots & curves
 │   │   ├── daily_sales_trend.png
@@ -460,14 +457,12 @@ Fits Seasonal Naive, Holt-Winters, SARIMA, and SARIMAX across macro enterprise d
 ## 12. Explanation of Notebooks, Reports, Figures, and Saved Models
 
 ### 12.1 Jupyter Notebooks (`notebooks/`)
-- `01_exploratory_data_analysis.ipynb`: Interactive analysis of sales distributions, store typology, payday lift, and oil price movements.
-- `02_preprocessing_and_feature_engineering.ipynb`: Interactive pipeline for oil interpolation, calendar indicators, lag creation, and split verification.
-- `03_linear_regression_modeling.ipynb`: In-depth analysis of OLS, Ridge, Lasso, and Elastic Net regularization curves and feature weights.
-- `04_logistic_regression_modeling.ipynb`: Interactive surge classification, PR curves, and confusion matrix diagnostics.
-- `04_logistic_regression_classification.ipynb`: Synchronized mirror of Phase 2 classification.
-- `05_time_series_forecasting.ipynb`: Time-series decomposition, ACF/PACF plots, and SARIMAX state-space fitting.
-- `05_time_series_modeling.ipynb`: Synchronized mirror of Phase 3 time-series forecaster.
-- `06_model_evaluation_and_comparison.ipynb`: Cross-phase synthesis comparing regression, classification, and time-series performance.
+The notebooks follow a sequential, reproducible execution order with zero data leakage:
+- `01_data_exploration_and_preprocessing.ipynb`: Interactive analysis of sales distributions, store typology, payday lift, calendar engineering, 16-day cutoff lag generation, and processed Parquet export (`data/processed/`).
+- `02_linear_regression.ipynb`: Multi-algorithm continuous sales regression comparing OLS, Ridge ($\alpha=100.0$), Lasso ($\alpha=0.001$), ElasticNet ($\alpha=0.001, l1=0.2$), and DecisionTreeRegressor. Includes residual diagnostics, coefficient rankings, and model serialization.
+- `03_logistic_regression.ipynb`: Demand surge classification ($\ge 1.5\times$ baseline) comparing DummyClassifier, Standard Logistic Regression, Class-Balanced Logistic Regression, DecisionTreeClassifier, and Threshold-Tuned Logistic Regression ($\tau=0.29$). Includes ROC/PR curves and confusion matrices.
+- `04_time_series_forecasting.ipynb`: Econometric time-series forecasting comparing Seasonal Naive, Moving Average, Holt-Winters Exponential Smoothing, Univariate SARIMA, and SARIMAX with forward promotional/calendar covariates. Includes enterprise aggregated demand, representative 5-series cohort benchmark, and 16-day future horizon projections.
+- `05_final_model_comparison.ipynb`: Master synthesis consolidating regression, classification, and time-series benchmark tables, visual metric comparisons, operational trade-off matrices, and supply-chain deployment recommendations.
 
 ### 12.2 Academic Reports (`reports/`)
 - `academic_project_report.md`: Formal academic summary covering problem formulation, methodology, and supply chain insights.

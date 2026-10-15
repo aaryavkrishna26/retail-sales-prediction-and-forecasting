@@ -265,12 +265,11 @@ $$R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y}_{\text{val}})^2}
 - `run_linear_regression.py`, `run_logistic_regression.py`, `run_time_series.py`, `run_eda.py`: Standalone execution runners that automate training, holdout evaluation, CSV table export, diagnostic plot generation, and artifact serialization.
 
 ### 2. Modular Jupyter Notebooks (`notebooks/`)
-- `01_exploratory_data_analysis.ipynb`: Interactive data inspection, store cluster boxplots, payday lift distributions, and Brent oil price trends.
-- `02_preprocessing_and_feature_engineering.ipynb`: Step-by-step verification of missing oil imputation, calendar indicators, lag formation, and zero-leakage splits.
-- `03_linear_regression_modeling.ipynb`: Interactive execution and hyperparameter tuning for Ridge, Lasso, and Elastic Net regularizers.
-- `04_logistic_regression_modeling.ipynb`: Surge classification analysis, precision-recall curve inspection, and confusion matrix diagnostics.
-- `05_time_series_forecasting.ipynb`: Time-series stationarity testing, ACF/PACF autocorrelation diagnostics, and SARIMAX model fitting.
-- `06_model_evaluation_and_comparison.ipynb`: Cross-phase synthesis unifying regression, classification, and econometric forecasters.
+- `01_data_exploration_and_preprocessing.ipynb`: Interactive data inspection, store cluster boxplots, payday lift distributions, calendar engineering, 16-day lag generation, and parquet export.
+- `02_linear_regression.ipynb`: Continuous sales regression comparing OLS, Ridge, Lasso, Elastic Net, and DecisionTreeRegressor with residual diagnostics and model serialization.
+- `03_logistic_regression.ipynb`: Surge classification analysis, precision-recall curve inspection, threshold tuning ($\tau=0.29$), and confusion matrix diagnostics.
+- `04_time_series_forecasting.ipynb`: Multi-algorithm forecasting (Naive, MA, Holt-Winters, SARIMA, SARIMAX) across enterprise and cohort levels.
+- `05_final_model_comparison.ipynb`: Master cross-task synthesis unifying continuous regression, surge classification, and econometric forecasters with operational deployment roadmaps.
 
 ### 3. Serialized Model Artifacts (`models/`)
 - `best_linear_model.joblib` (~6 KB): Serialized `scikit-learn` Ridge pipeline ($\alpha=100.0$) including transformer pipelines and fitted weights.

@@ -46,6 +46,29 @@ class SeasonalNaiveForecaster:
         return np.clip(np.array(preds, dtype=float), a_min=0, a_max=None)
 
 
+class MovingAverageForecaster:
+    """
+    Moving Average Forecaster: projects the trailing rolling window mean into the future horizon.
+    """
+
+    def __init__(self, window: int = 7):
+        self.window = window
+        self.mean_value_: Optional[float] = None
+
+    def fit(self, y: Union[pd.Series, np.ndarray]) -> "MovingAverageForecaster":
+        values = y.values if isinstance(y, (pd.Series, pd.DataFrame)) else np.asarray(y)
+        if len(values) < self.window:
+            self.mean_value_ = float(np.mean(values))
+        else:
+            self.mean_value_ = float(np.mean(values[-self.window:]))
+        return self
+
+    def forecast(self, steps: int = 15) -> np.ndarray:
+        if self.mean_value_ is None:
+            raise ValueError("Forecaster must be fit before generating forecasts.")
+        return np.clip(np.full(steps, fill_value=self.mean_value_, dtype=float), a_min=0, a_max=None)
+
+
 class HoltWintersForecaster:
     """
     Holt-Winters Exponential Smoothing forecaster with additive trend and seasonal components.
@@ -241,11 +264,13 @@ def plot_time_series_forecast(
     history_y: Optional[np.ndarray] = None,
     title: str = "Retail Sales Out-of-Sample Time Series Forecast",
     ylabel: str = "Sales Volume",
-    output_path: Optional[str] = None,
+    output_path: Optional[Any] = None,
+    save_path: Optional[Any] = None,
 ) -> None:
     """
     Generate high-contrast visualization comparing forecast trajectories against ground truth.
     """
+    out_file = output_path or save_path
     plt.style.use("seaborn-v0_8-whitegrid")
     fig, ax = plt.subplots(figsize=(12, 6), dpi=150)
 
@@ -274,6 +299,7 @@ def plot_time_series_forecast(
     # Model forecasts with distinct styling
     palette = {
         "Seasonal Naive": ("#7f8c8d", "--"),
+        "Moving Average": ("#16a085", ":"),
         "Holt-Winters": ("#e67e22", "-."),
         "SARIMA (Univariate)": ("#2980b9", "-."),
         "SARIMAX (With Exogenous)": ("#27ae60", "-"),
@@ -302,19 +328,21 @@ def plot_time_series_forecast(
     plt.xticks(rotation=25)
     plt.tight_layout()
 
-    if output_path:
-        plt.savefig(output_path, dpi=300, bbox_inches="tight")
-        logger.info("Saved forecast visualization to %s", output_path)
+    if out_file:
+        plt.savefig(out_file, dpi=300, bbox_inches="tight")
+        logger.info("Saved forecast visualization to %s", out_file)
     plt.close()
 
 
 def plot_cohort_time_series_forecasts(
     cohort_results: Dict[str, Dict[str, Any]],
-    output_path: Optional[str] = None,
+    output_path: Optional[Any] = None,
+    save_path: Optional[Any] = None,
 ) -> None:
     """
     Generate a multi-panel subplot displaying forecasts across representative store-family series.
     """
+    out_file = output_path or save_path
     plt.style.use("seaborn-v0_8-whitegrid")
     n_series = len(cohort_results)
     fig, axes = plt.subplots(n_series, 1, figsize=(13, 3.2 * n_series), dpi=150, sharex=True)
@@ -355,19 +383,21 @@ def plot_cohort_time_series_forecasts(
     plt.xticks(rotation=25)
     plt.tight_layout()
 
-    if output_path:
-        plt.savefig(output_path, dpi=300, bbox_inches="tight")
-        logger.info("Saved cohort forecasts visualization to %s", output_path)
+    if out_file:
+        plt.savefig(out_file, dpi=300, bbox_inches="tight")
+        logger.info("Saved cohort forecasts visualization to %s", out_file)
     plt.close()
 
 
 def plot_time_series_comparison_bar(
     metrics_df: pd.DataFrame,
-    output_path: Optional[str] = None,
+    output_path: Optional[Any] = None,
+    save_path: Optional[Any] = None,
 ) -> None:
     """
     Generate grouped comparative bar chart for RMSLE, RMSE, and MAE across models.
     """
+    out_file = output_path or save_path
     plt.style.use("seaborn-v0_8-whitegrid")
     fig, axes = plt.subplots(1, 3, figsize=(15, 5), dpi=150)
 
@@ -390,9 +420,9 @@ def plot_time_series_comparison_bar(
             ax.get_legend().remove()
 
     plt.tight_layout()
-    if output_path:
-        plt.savefig(output_path, dpi=300, bbox_inches="tight")
-        logger.info("Saved time series comparison bar chart to %s", output_path)
+    if out_file:
+        plt.savefig(out_file, dpi=300, bbox_inches="tight")
+        logger.info("Saved time series comparison bar chart to %s", out_file)
     plt.close()
 
 
@@ -400,11 +430,13 @@ def plot_time_series_residuals(
     residuals: np.ndarray,
     dates: pd.DatetimeIndex,
     model_name: str = "SARIMAX",
-    output_path: Optional[str] = None,
+    output_path: Optional[Any] = None,
+    save_path: Optional[Any] = None,
 ) -> None:
     """
     Generate residual diagnostics: Residuals over time, ACF correlogram, and histogram.
     """
+    out_file = output_path or save_path
     plt.style.use("seaborn-v0_8-whitegrid")
     fig, axes = plt.subplots(1, 3, figsize=(16, 4.5), dpi=150)
 

@@ -3,10 +3,11 @@ Preprocessing, feature engineering, and temporal dataset transformation pipeline
 """
 
 from typing import Dict, Tuple, Optional
+from pathlib import Path
 import logging
 import numpy as np
 import pandas as pd
-from src.config import VAL_START_DATE, TARGET_COL, SURGE_TARGET_COL
+from src.config import VAL_START_DATE, TARGET_COL, SURGE_TARGET_COL, PROCESSED_DATA_DIR
 
 logger = logging.getLogger(__name__)
 
@@ -252,3 +253,65 @@ def temporal_train_val_split(
         val_df["date"].min(),
     )
     return train_df, val_df
+
+
+def save_processed_datasets(
+    train_df: pd.DataFrame,
+    val_df: pd.DataFrame,
+    processed_dir: Optional[Path] = None,
+) -> Tuple[Path, Path]:
+    """
+    Save engineered train and validation datasets to the processed directory in Parquet format.
+    Falls back to CSV format if Parquet writing encounters an error.
+    """
+    target_dir = Path(processed_dir) if processed_dir is not None else PROCESSED_DATA_DIR
+    target_dir.mkdir(parents=True, exist_ok=True)
+
+    train_path = target_dir / "train_engineered.parquet"
+    val_path = target_dir / "val_engineered.parquet"
+
+    try:
+        train_df.to_parquet(train_path, index=False)
+        val_df.to_parquet(val_path, index=False)
+        logger.info("Successfully exported processed datasets to %s and %s", train_path.name, val_path.name)
+    except Exception as exc:
+        logger.warning("Parquet export failed (%s); exporting to CSV format...", exc)
+        train_path = target_dir / "train_engineered.csv"
+        val_path = target_dir / "val_engineered.csv"
+        train_df.to_csv(train_path, index=False)
+        val_df.to_csv(val_path, index=False)
+        logger.info("Successfully exported processed CSV datasets to %s and %s", train_path.name, val_path.name)
+
+    return train_path, val_path
+
+
+def load_processed_datasets(
+    processed_dir: Optional[Path] = None,
+) -> Tuple[Optional[pd.DataFrame], Optional[pd.DataFrame]]:
+    """
+    Load preprocessed engineered datasets from processed directory if available.
+    Returns (train_df, val_df) or (None, None) if files do not exist.
+    """
+    target_dir = Path(processed_dir) if processed_dir is not None else PROCESSED_DATA_DIR
+    train_parquet = target_dir / "train_engineered.parquet"
+    val_parquet = target_dir / "val_engineered.parquet"
+
+    if train_parquet.exists() and val_parquet.exists():
+        logger.info("Loading preprocessed Parquet datasets from %s...", target_dir)
+        train_df = pd.read_parquet(train_parquet)
+        val_df = pd.read_parquet(val_parquet)
+        if "date" in train_df.columns:
+            train_df["date"] = pd.to_datetime(train_df["date"])
+            val_df["date"] = pd.to_datetime(val_df["date"])
+        return train_df, val_df
+
+    train_csv = target_dir / "train_engineered.csv"
+    val_csv = target_dir / "val_engineered.csv"
+    if train_csv.exists() and val_csv.exists():
+        logger.info("Loading preprocessed CSV datasets from %s...", target_dir)
+        train_df = pd.read_csv(train_csv, parse_dates=["date"])
+        val_df = pd.read_csv(val_csv, parse_dates=["date"])
+        return train_df, val_df
+
+    return None, None
+
