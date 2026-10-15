@@ -1,3 +1,12 @@
+## Project Team Members
+
+| S. No. | Name | Student ID |
+|---|---|---|
+| 1 | Aaryav Krishna | 2427030754 |
+| 2 | Rishit Khanna | 2427030757 |
+
+---
+
 # Retail Sales Prediction and Forecasting
 
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
