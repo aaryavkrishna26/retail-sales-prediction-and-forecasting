@@ -7,7 +7,11 @@ The project evaluates three approaches to retail demand analysis:
 - Time-Series Forecasting — forecast future sales from historical patterns.
 Project Team
 S. No.	Name	Student ID
+
+
 1	Aaryav Krishna	2427030754
+
+
 2	Rishit Khanna	2427030757
 
 
