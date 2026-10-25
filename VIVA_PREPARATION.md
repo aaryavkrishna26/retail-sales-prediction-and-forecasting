@@ -332,8 +332,9 @@ $$R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y}_{\text{val}})^2}
 #### Q14: What is Elastic Net regression?
 **Answer:** Elastic Net combines both $L_1$ (Lasso) and $L_2$ (Ridge) penalties via a mixing parameter $\ell_1$. It is especially useful when multiple features are highly correlated; Lasso typically picks only one at random, whereas Elastic Net retains the group structure while inducing sparsity.
 
-#### Q15: What were the actual performance metrics of your best linear model?
-**Answer:** On the 26,730 validation holdout observations, our selected **Ridge Regression ($\alpha=100.0$)** achieved an **RMSLE of 0.6481**, **RMSE of 470.02**, **MAE of 128.31**, and **$R^2$ of 0.8573**. Lasso achieved the lowest RMSE of 456.40 and MAE of 121.99 ($R^2 = 0.8655$).
+#### Q15: What were the actual performance metrics of your best Linear Regression model?
+
+**Answer:** On the 26,730 validation holdout observations, our final selected model was **Lasso Regression (\(\alpha = 0.001\))**. It achieved an **RMSLE of 0.6539**, **RMSE of 456.40**, **MAE of 121.99**, and **\(R^2 = 0.8655\)**. We selected Lasso because it achieved better RMSE, MAE, and \(R^2\) than the other linear regression models in our comparison. Lasso also performs automatic feature selection by reducing the coefficients of less useful features to zero.
 
 #### Q16: Why did the addition of trailing 365-day rolling baselines dramatically improve your linear model?
 **Answer:** Static target encodings create a severe train-validation distribution mismatch. By introducing dynamic 365-day rolling mean log-sales (`hist_sf_mean_log`) and 52-week day-of-week baselines (`hist_sf_dow_mean_log`) shifted by 16 days, the models gained access to store-family scale and seasonal profiles with zero leakage, elevating $R^2$ from 0.0113 to 0.8573.
