@@ -5,8 +5,8 @@ The project evaluates three approaches to retail demand analysis:
 - Linear Regression — predict continuous sales values.
 - Logistic Regression — classify potential demand surges.
 - Time-Series Forecasting — forecast future sales from historical patterns.
+
 Project Team
-S. No.	Name	Student ID
 
 
 1	Aaryav Krishna	2427030754
