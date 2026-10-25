@@ -189,7 +189,7 @@ def run_linear_regression_phase() -> pd.DataFrame:
     
     # 7. Generate Diagnostic Plots
     logger.info("Step 7: Generating diagnostic plots under reports/figures/...")
-    best_linear_model_name = "Ridge Regression"
+    best_linear_model_name = "Lasso Regression"
     best_pipe = trained_pipelines[best_linear_model_name]
     best_preds = val_predictions[best_linear_model_name]
     
