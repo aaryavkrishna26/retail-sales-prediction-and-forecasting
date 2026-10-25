@@ -576,6 +576,16 @@ Calculates zero-leakage surge thresholds on training data, benchmarks DummyClass
 python src/run_time_series.py
 
 Fits Seasonal Naive, Holt-Winters, SARIMA, and SARIMAX across macro enterprise demand and micro cohort series, generates multi-panel forecast and residual diagnostic plots, outputs [`reports/time_series_metrics.csv`](reports/time_series_metrics.csv), and saves [`models/best_time_series_model.joblib`](models/best_time_series_model.joblib).
+
+6. Interactive Terminal Prediction System (All Three Phases)
+
+python src/predict_from_terminal.py
+
+Provides an interactive CLI menu to generate live predictions across all three modeling phases:
+- **Option 1 (Linear Regression — Predict Sales)**: Predicts continuous daily unit sales for any store, product family, and calendar date using the trained Lasso pipeline with historical lags, rolling features, store cluster/type metadata, and promotion signals.
+- **Option 2 (Logistic Regression — Predict Demand Surge)**: Evaluates demand surge probability and classifies whether sales will exceed historical 80th-percentile surge levels using the calibrated decision threshold ($\tau \approx 0.29$).
+- **Option 3 (Time Series — Forecast Future Sales)**: Generates multi-day forecasting trajectories across Enterprise Aggregated (national network) or Store-Family cohorts using Seasonal Naive, Holt-Winters Exponential Smoothing, SARIMA, or SARIMAX with forward promotions, holidays, paydays, and oil prices.
+- **Option 4 (Exit)**: Clean exit back to the shell.
 12. Explanation of Notebooks, Reports, Figures, and Saved Models
 12.1 Jupyter Notebooks (notebooks/)
 The notebooks follow a sequential, reproducible execution order with zero data leakage:
